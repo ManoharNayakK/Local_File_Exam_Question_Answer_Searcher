@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>College Q&A Assistant</title>
+
+  <!-- Libraries required by app.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/elasticlunr/0.9.6/elasticlunr.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="" alt="" class="logo" aria-hidden="true" />
+        <div>
+          <div class="title">College Q&A Assistant</div>
+          <div class="subtitle">Fast local PDF / DOCX / PPTX search + OCR</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label class="file-label">
+          <input id="file" type="file" multiple accept=".pdf,.docx,.pptx,.png,.jpg,.jpeg" />
+          <span class="file-btn">Upload files</span>
+        </label>
+
+        <label class="checkbox">
+          <input id="chk-ocr" type="checkbox" />
+          Force OCR
+        </label>
+
+        <div id="status" class="status" aria-live="polite">Ready — upload PDFs/DOCX/PPTX or ask a question.</div>
+
+        <div id="meter-wrap" class="meter-wrap" title="Parsing progress">
+          <div id="meter" class="meter"></div>
+        </div>
+
+        <div class="hint">
+          Tip: Upload your lecture notes or slides, then ask questions — answers appear from local files first.
+        </div>
+      </div>
+
+      <div class="credits">Made with ❤️ · Local-only by default</div>
+    </aside>
+
+    <main class="chat">
+      <div id="messages" class="messages" role="log" aria-live="polite"></div>
+
+      <form class="composer" onsubmit="return false;">
+        <input id="q" class="compose-input" type="text" placeholder="Ask a question (e.g. Explain pipelining)..." autocomplete="off" />
+        <select id="marks" class="marks">
+          <option value="2">2 Marks</option>
+          <option value="5">5 Marks</option>
+          <option value="10" selected>10 Marks</option>
+        </select>
+        <button id="ask" class="btn primary" title="Ask">Ask</button>
+      </form>
+    </main>
+  </div>
+<div id="answer"></div>
+
+<script>
+
+  // Replace newlines with <br> inside <li> tags
+  const formattedHtml = rawHtml.replace(/<li>([\s\S]*?)<\/li>/g, (match, content) => {
+    // Trim extra spaces and replace line breaks with <br>
+    const newContent = content.trim().replace(/\n/g, '<br>');
+    return `<li>${newContent}</li>`;
+  });
+
+  document.getElementById('answer').innerHTML = formattedHtml;
+</script>
+
+  <!-- Your app logic (app.js) -->
+  <script src="app.js"></script>
+</body>
+</html>
+
